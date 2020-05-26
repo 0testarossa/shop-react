@@ -2,14 +2,17 @@
   "name": "shop-meteor-react",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "MONGO_URL=mongodb://kiranella:zaqWSX@towerofbase-shard-00-00-psn5x.mongodb.net:27017,towerofbase-shard-00-01-psn5x.mongodb.net:27017,towerofbase-shard-00-02-psn5x.mongodb.net:27017/test?ssl=true&replicaSet=towerOfBase-shard-0&authSource=admin&retryWrites=true&w=majority meteor",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
     "meteor-node-stubs": "^1.0.0",
+    "popper.js": "^1.16.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
   },
