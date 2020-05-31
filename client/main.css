@@ -1,6 +1,6 @@
 .img-list {
   width: 100%;
-  height: auto;
+  height: 15vw;
 }
 
 .table td {
@@ -8,6 +8,17 @@
   height: 1rem;
 }
 
+li .horizontal-list-element {
+  border: none;
+}
+
+
+
+
+
+.product-details-top-container {
+  display: flex;
+}
 
 /* body {
   padding: 10px;
