@@ -48,6 +48,10 @@ html {
   padding: 10px;
 }
 
+.selected-shipment-method {
+  border: solid #98c2da
+}
+
 /* body {
   padding: 10px;
   font-family: sans-serif;

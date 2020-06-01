@@ -5,6 +5,7 @@ import useReactRouter from "use-react-router";
 const ProductPage = (props) => {
     const lessOperator = '<';
     const { history } = useReactRouter();
+    const [activeShipmentMethod, setActiveShipmentMethod] = useState(0)
 
     const getRecommendedProducts = () => {
         const allItems = [selectedBook._id];
@@ -74,11 +75,120 @@ const ProductPage = (props) => {
         }
     }
 
+    const onShipmentMethodClick = (event, methodIndex) => {
+        setActiveShipmentMethod(methodIndex);
+    }
+
+    const afterAddingToCart = () => {
+
+    }
+
+    const changeSite = (site) => {
+        if(site === "productList") {
+            history.push("/");
+        } else if(site === "cart") {
+            history.push("/cart");
+        }
+    }
+
     console.log("props");
     console.log(props);
-
+    
     return(
     <div className="product-details-page">
+        {/* modal */}
+        <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog" role="document" style={{maxWidth: "1000px"}}>
+            <div className="modal-content" style={{height: "600px"}}>
+              <div className="modal-header" style={{backgroundColor: "rgb(193, 193, 193)"}}>
+                <h5 className="modal-title" id="exampleModalLabel">Shipment Method</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body" style={{backgroundColor: "rgba(0, 0, 0, 0.82)", padding: "1rem 0rem"}}>
+                <table className="table table-hover table-striped table-dark">
+                    <thead>
+                        <tr>
+                        <th scope="col" style={{"verticalAlign": "middle", "textAlign": "center", paddingLeft: "1rem", paddingRight: "0rem", width: "1%"}}>#</th>
+                        <th scope="col" style={{"textAlign": "center", "verticalAlign": "middle"}}>Method</th>
+                        <th scope="col" style={{"verticalAlign": "middle", "textAlign": "center"}}>Delivery Time</th>
+                        <th scope="col" style={{"verticalAlign": "middle", "textAlign": "center", paddingLeft: "1rem", paddingRight: "0rem", width: "1%"}}>Delivery price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr className={activeShipmentMethod===0 ? "selected-shipment-method" : ""} onClick={(event) => onShipmentMethodClick(event,0)} style={{height: "140px"}}>
+                            <th style={{"verticalAlign": "middle", "textAlign": "center", paddingLeft: "1rem", paddingRight: "0rem", width: "1%"}}>
+                            1
+                            </th>
+                            <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
+                            PICK UP IN STORE
+                            </td>
+                            <td style={{"verticalAlign": "middle", "textAlign": "center"}}>
+                            
+                            </td>
+                            <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "center", width: "30%"}}>
+                            0$
+                            </td>
+                        </tr>
+                        <tr className={activeShipmentMethod===1 ? "selected-shipment-method" : ""} onClick={(event) => onShipmentMethodClick(event,1)} style={{height: "140px"}}>
+                            <th style={{"verticalAlign": "middle", "textAlign": "center", paddingLeft: "1rem", paddingRight: "0rem", width: "1%"}}>
+                            2
+                            </th>
+                            <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
+                            PARCEL LOCKER
+                            </td>
+                            <td style={{"verticalAlign": "middle", "textAlign": "center"}}>
+                            {selectedBook.delivery.parcelLocker.time}
+                            </td>
+                            <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "center"}}>
+                            {selectedBook.delivery.parcelLocker.price}
+                            </td>
+                        </tr>
+                        <tr className={activeShipmentMethod===2 ? "selected-shipment-method" : ""} onClick={(event) => onShipmentMethodClick(event,2)} style={{height: "140px"}}>
+                            <th style={{"verticalAlign": "middle", "textAlign": "center", paddingLeft: "1rem", paddingRight: "0rem", width: "1%"}}>
+                            3
+                            </th>
+                            <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
+                            COURIER
+                            </td>
+                            <td style={{"verticalAlign": "middle", "textAlign": "center"}}>
+                            {selectedBook.delivery.courier.time}
+                            </td>
+                            <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "center"}}>
+                            {selectedBook.delivery.courier.price}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div className="modal-footer" style={{backgroundColor: "rgb(193, 193, 193)"}}>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+                <button data-toggle="modal" data-target="#questionModal" type="button" className="btn btn-primary" data-dismiss="modal">ADD TO CART</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* modal end */}
+
+        <div className="modal fade" id="questionModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header" style={{border: "none"}}>
+                    <h5 className="modal-title" id="exampleModalLabel">Do you wish to continue shopping?</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div className="modal-footer" style={{border: "none", justifyContent: "space-around"}}>
+                    <button onClick={() => changeSite("productList")} type="button" className="btn btn-secondary" data-dismiss="modal">CONTINUE SHOPPING</button>
+                    <button onClick={() => changeSite("cart")} type="button" className="btn btn-primary" data-dismiss="modal">GO TO MY CART</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
         <img className="img-rounded img-list" src="line.png" alt="line.png"/>
         <div className="product-details-path">
             <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} {selectedBook.title}</div>
@@ -99,7 +209,7 @@ const ProductPage = (props) => {
                             onBlur={(event) => validateItemAmount(event)} value={itemAmount} onChange={(event) => getNewItemAmount(event)}/>
                             <span style={{ backgroundColor: "inherit", cursor: "pointer", padding: "12px"}} onClick={() => plusOrMinusItemAmount("minus")}>-</span>
                             </span>
-                        <span onClick={() => {}} className="font-weight-bold plus-minus-button" style={{ marginLeft: "30px", backgroundColor: "#6593F5", cursor: "pointer"}}>ADD TO CART</span></li>
+                        <span data-toggle="modal" data-target="#exampleModal" className="font-weight-bold plus-minus-button" style={{ marginLeft: "30px", backgroundColor: "#6593F5", cursor: "pointer"}}>ADD TO CART</span></li>
                 </ul>
             </div>
         </div>
