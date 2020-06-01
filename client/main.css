@@ -16,8 +16,36 @@ li .horizontal-list-element {
 
 
 
-.product-details-top-container {
+.product-details-page {
+  background-color: #212529;
+  margin: 0;
+  padding: 0;
+}
+
+.product-details-container {
+  background-color: rgba(255,255,255,.05);
+  margin: 1rem 30rem;
+  color: #ffffff;
+}
+
+.product-details-path {
+  background-color: rgba(255,255,255,.05);
+  color: #ffffff;
+  height: 3rem;
   display: flex;
+  align-items: center;
+}
+
+html {
+  background-color: #212529;
+  margin: 0;
+  padding: 0;
+}
+
+.plus-minus-button {
+  border: solid 2.3px black;
+  border-radius: 3.5rem;
+  padding: 10px;
 }
 
 /* body {

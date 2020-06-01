@@ -17,7 +17,22 @@ export const books = [
     availability: "Available",
     image: "book1.png",
     _id: "1",
-    deliverTime: "7-14 days"
+    deliveryTime: "7-14 days",
+    state: "new",
+    delivery: {
+      pickUpInStore: {
+        price: "0$",
+        time: ""
+      },
+      parcelLocker: {
+        price: "2$",
+        time: "14 days"
+      },
+      courier: {
+        price: "5$",
+        time: "7 days"
+      }
+    }
 },
 {
   title:"Tower of God2",
@@ -28,7 +43,22 @@ export const books = [
   availability: "Available",
   image: "book10.png",
   _id: "2",
-  deliverTime: "2-3 days"
+  deliveryTime: "2-3 days",
+  state: "used",
+  delivery: {
+    pickUpInStore: {
+      price: "0$",
+      time: ""
+    },
+    parcelLocker: {
+      price: "2$",
+      time: "3 days"
+    },
+    courier: {
+      price: "5$",
+      time: "2 days"
+    }
+  }
 },
 {
   title:"Tower of God3",
@@ -39,7 +69,22 @@ export const books = [
   availability: "Available",
   image: "book25.png",
   _id: "3",
-  deliverTime: "8-10 days"
+  deliveryTime: "8-10 days",
+  state: "new",
+  delivery: {
+    pickUpInStore: {
+      price: "0$",
+      time: ""
+    },
+    parcelLocker: {
+      price: "2$",
+      time: "10 days"
+    },
+    courier: {
+      price: "5$",
+      time: "8 days"
+    }
+  }
 }
 ]
 
@@ -105,11 +150,23 @@ export const App = (props) => {
         )
       })
       return(
+        <div className="product-details-page">
+        <img className="img-rounded img-list" src="line.png" alt="line.png"/>
+        <div className="product-details-path">
+            <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a></span></div>
+        </div>
+        <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
+          
+
         <table className="table table-hover table-striped table-dark">
           <tbody>
             {booksList}
           </tbody>
         </table>
+
+
+        </div>
+          </div>
       );
   }
 
