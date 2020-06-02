@@ -7,6 +7,7 @@ import 'bootstrap'
 import popper from 'popper.js'
 import { Route, HashRouter, Switch } from 'react-router-dom';
 import ProductPage from '../imports/ui/ProductPage';
+import Cart from '../imports/ui/Cart';
 // global.Popper = popper // uncomment when modals etc. are not working properly
  
 
@@ -29,6 +30,7 @@ Meteor.startup(() => {
         <Route path="/" exact component={App}/>
         <Route path="/product" exact component={ProductPage}/>
         <Route path="/product/:id" exact component={ProductPage}/>
+        <Route path="/cart" exact component={Cart}/>
       </Switch>
     </HashRouter>,
     document.getElementById('react-target'),

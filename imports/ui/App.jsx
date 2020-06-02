@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { Hello } from './Hello.jsx';
 import { Info } from './Info.jsx';
 import { Story } from './Story.jsx';
@@ -6,90 +6,11 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Stories } from '../api/stories.js';
 import ReactDOM from 'react-dom';
 import useReactRouter from "use-react-router";
-
-export const books = [
-  {
-    title:"Tower of God",
-    author:"Joseph",
-    genre: "Comedy",
-    price: "50$",
-    header: "RECOMMENDED",
-    availability: "Available",
-    image: "book1.png",
-    _id: "1",
-    deliveryTime: "7-14 days",
-    state: "new",
-    delivery: {
-      pickUpInStore: {
-        price: "0$",
-        time: ""
-      },
-      parcelLocker: {
-        price: "2$",
-        time: "14 days"
-      },
-      courier: {
-        price: "5$",
-        time: "7 days"
-      }
-    }
-},
-{
-  title:"Tower of God2",
-  author:"Joseph2",
-  genre: "Comedy2",
-  price: "60$",
-  header: "RECOMMENDED",
-  availability: "Available",
-  image: "book10.png",
-  _id: "2",
-  deliveryTime: "2-3 days",
-  state: "used",
-  delivery: {
-    pickUpInStore: {
-      price: "0$",
-      time: ""
-    },
-    parcelLocker: {
-      price: "2$",
-      time: "3 days"
-    },
-    courier: {
-      price: "5$",
-      time: "2 days"
-    }
-  }
-},
-{
-  title:"Tower of God3",
-  author:"Joseph3",
-  genre: "Comedy3",
-  price: "70$",
-  header: "RECOMMENDED",
-  availability: "Available",
-  image: "book25.png",
-  _id: "3",
-  deliveryTime: "8-10 days",
-  state: "new",
-  delivery: {
-    pickUpInStore: {
-      price: "0$",
-      time: ""
-    },
-    parcelLocker: {
-      price: "2$",
-      time: "10 days"
-    },
-    courier: {
-      price: "5$",
-      time: "8 days"
-    }
-  }
-}
-]
+import {books} from "./mockBooks"
 
 export const App = (props) => {
   const { history } = useReactRouter();
+  const [actualPage, setActualPage] = useState("1");
   console.log("props");
   console.log(props);
   const inputEl = useRef(null);
@@ -104,6 +25,28 @@ export const App = (props) => {
       });
      }
   }
+  
+  const getSitePages = () => {
+    const amountOfPages = Math.ceil(((books.length)/10));
+    const pagesArray = [];
+    for(i=0;i<amountOfPages;i++) {
+      pagesArray.push((i+1).toString());
+    }
+
+    const pagesNumbers = pagesArray.map((pageNumber, index) => {
+      const pageNumberClasses = `page-number-square ${actualPage === pageNumber ? "page-number-square-active" : ""}`
+      return (
+        <div className={pageNumberClasses} key={index} onClick={() => setActualPage(pageNumber)}>
+          {pageNumber}
+        </div>
+      )
+    })
+    return (
+    <div className="site-pages-container d-flex">
+      {pagesNumbers}
+    </div>
+    )
+  }
 
   const getShopItemsList = () => {
       const onItemClick = (bookId) => {
@@ -111,43 +54,49 @@ export const App = (props) => {
       }
 
       const booksList = books.map((book, index) => {
-        return (
-          <tr key={index} onClick={() => onItemClick(book._id)}>
-                <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
-                  <img className="img-rounded img-list" src={book.image} alt={book.image}/>
-                </td>
-                <td style={{"verticalAlign": "middle"}}>
-
-
-                <ul className="list-group list-group-flush bg-transparent">
-                <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold" >{book.header}</li>
-                  <li className="list-group-item bg-transparent">
-                  
-                  <ul className="d-flex flex-wrap">
-                      <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Title</li>
-                      <li className="list-group-item bg-transparent horizontal-list-element" >{book.title}</li>
-                  </ul>
-                  <ul className="d-flex flex-wrap">
-                      <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Author</li>
-                      <li className="list-group-item bg-transparent horizontal-list-element" >{book.author}</li>
-                  </ul>
-                  <ul className="d-flex flex-wrap">
-                      <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Genre</li>
-                      <li className="list-group-item bg-transparent horizontal-list-element" >{book.genre}</li>
-                  </ul>
-                  <ul className="d-flex flex-wrap">
-                      <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Price</li>
-                      <li className="list-group-item bg-transparent horizontal-list-element" >{book.price}</li>
-                  </ul>
-                  
-                  </li>
-                </ul>
-
-
+        const max = actualPage*10;
+        const min = max-9;
+        if(index+1 >= min && index+1 <=max) {
+          return (
+            <tr key={index} onClick={() => onItemClick(book._id)}>
+                  <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
+                    <img className="img-rounded img-list" src={book.image} alt={book.image}/>
                   </td>
-                <td className="text-success font-weight-bold" style={{verticalAlign:"middle"}}>{book.availability}</td>
-              </tr>
-        )
+                  <td style={{"verticalAlign": "middle"}}>
+  
+  
+                  <ul className="list-group list-group-flush bg-transparent">
+                  <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold" >{book.header}</li>
+                    <li className="list-group-item bg-transparent">
+                    
+                    <ul className="d-flex flex-wrap">
+                        <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Title</li>
+                        <li className="list-group-item bg-transparent horizontal-list-element" >{book.title}</li>
+                    </ul>
+                    <ul className="d-flex flex-wrap">
+                        <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Author</li>
+                        <li className="list-group-item bg-transparent horizontal-list-element" >{book.author}</li>
+                    </ul>
+                    <ul className="d-flex flex-wrap">
+                        <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Genre</li>
+                        <li className="list-group-item bg-transparent horizontal-list-element" >{book.genre}</li>
+                    </ul>
+                    <ul className="d-flex flex-wrap">
+                        <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Price</li>
+                        <li className="list-group-item bg-transparent horizontal-list-element" >{book.price}</li>
+                    </ul>
+                    
+                    </li>
+                  </ul>
+  
+  
+                    </td>
+                  <td className="text-success font-weight-bold" style={{verticalAlign:"middle"}}>{book.availability}</td>
+                </tr>
+          )
+        } else{
+          return
+        }
       })
       return(
         <div className="product-details-page">
@@ -157,6 +106,9 @@ export const App = (props) => {
         </div>
         <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
           
+          <div className="site-pages d-flex" style={{justifyContent: "center"}}>
+            {getSitePages()}
+          </div>
 
         <table className="table table-hover table-striped table-dark">
           <tbody>

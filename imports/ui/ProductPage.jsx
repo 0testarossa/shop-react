@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {books} from "./App"
+import {books} from "./mockBooks"
 import useReactRouter from "use-react-router";
 
 const ProductPage = (props) => {
@@ -171,9 +171,10 @@ const ProductPage = (props) => {
         </div>
         {/* modal end */}
 
+        {/* second modal */}
         <div className="modal fade" id="questionModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
+            <div className="modal-dialog" role="document" style={{paddingTop: "300px"}}>
+                <div className="modal-content" style={{backgroundColor: "rgb(171, 171, 171)"}}>
                 <div className="modal-header" style={{border: "none"}}>
                     <h5 className="modal-title" id="exampleModalLabel">Do you wish to continue shopping?</h5>
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -187,7 +188,7 @@ const ProductPage = (props) => {
                 </div>
             </div>
         </div>
-
+        {/* second modal end */}
 
         <img className="img-rounded img-list" src="line.png" alt="line.png"/>
         <div className="product-details-path">

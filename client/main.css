@@ -52,6 +52,27 @@ html {
   border: solid #98c2da
 }
 
+
+
+.page-number-square {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.site-pages {
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+}
+
+.page-number-square:hover {
+  color: #3535ffc7;
+}
+
+.page-number-square-active {
+  border-radius: 80rem;
+  background-color: #f3f3f321;
+}
+
 /* body {
   padding: 10px;
   font-family: sans-serif;
