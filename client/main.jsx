@@ -8,6 +8,7 @@ import popper from 'popper.js'
 import { Route, HashRouter, Switch } from 'react-router-dom';
 import ProductPage from '../imports/ui/ProductPage';
 import Cart from '../imports/ui/Cart';
+import PaymentPage from '../imports/ui/PaymentPage';
 // global.Popper = popper // uncomment when modals etc. are not working properly
  
 
@@ -31,6 +32,7 @@ Meteor.startup(() => {
         <Route path="/product" exact component={ProductPage}/>
         <Route path="/product/:id" exact component={ProductPage}/>
         <Route path="/cart" exact component={Cart}/>
+        <Route path="/payment" exact component={PaymentPage}/>
       </Switch>
     </HashRouter>,
     document.getElementById('react-target'),

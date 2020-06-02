@@ -1,39 +1,99 @@
 import React, {useState} from 'react'
 import useReactRouter from "use-react-router";
 import {carts} from "./mockCart";
+import {books} from "./mockBooks"
 
 const Cart = (props) => {
     const { history } = useReactRouter();
+    const lessOperator = '<';
 
-    const getMyCart = () => {
-        return(
-            <div className="product-details-page">
-            <img className="img-rounded img-list" src="line.png" alt="line.png"/>
-            <div className="product-details-path">
-                <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a></span></div>
-            </div>
-        {/* <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
-          
-          <div className="site-pages d-flex" style={{justifyContent: "center", position: "relative", alignItems: "center"}}>
+    const deleteDollar = (amount) => {
+        const correctNumber = amount.split("").map((char) => {
+            if(char !== "$") {
+                return char
+            } else {
+                return ""
+            }
+        })
+        return correctNumber.join("");
+    }
 
-          </div>
-        </div> */}
+    const addDollar = (amount) => {
+        return `${amount}$`
+    }
 
+    const getBuyAllFromCart = () => {
+        let totalAmount = 0;
+
+        carts.map((product, index) => {
+            const selectedProduct = books.find((book) => {
+                return book._id === product._id;
+            });
+            const productPriceWithoutDelivery = addDollar((Number(deleteDollar(selectedProduct.price))*Number(product.amount)).toString());
+            const deliveryPrice = selectedProduct.delivery[product.delivery].price;
+            totalAmount += Number(deleteDollar(productPriceWithoutDelivery)) + Number(deleteDollar(deliveryPrice));
+            return product;
+        });
+        const stringTotalAmount = (addDollar(totalAmount)).toString();
+
+
+        return (
             <div className="product-details-container">
-                <h2 style={{"padding": "1rem"}}>Details</h2>
                 <div style={{"padding": "1rem"}}>
-                <ul className="list-group list-group-flush" style={{ "backgroundColor": "inherit", paddingTop: "50px"}}>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit", "position": "relative"}}><span className="font-weight-bold">cos2</span ><span style={{ "position": "absolute", "right":"0"}}>cos</span></li>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit"}}><span className="font-weight-bold">author: </span>cos3</li>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit"}}><span className="font-weight-bold">genre: </span>cos4</li>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit"}}><span className="font-weight-bold">price: </span>cos5</li>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit"}}><span className="font-weight-bold">state: </span>cos6</li>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit"}}><span className="font-weight-bold">delivery time: </span>cos7</li>
-                        <li className="list-group-item" style={{ "backgroundColor": "inherit"}}>As the shooting light and color displays, actual product and photos may have some differences. Contact us in order to get additional photos of our product.</li>
+                    <ul className="list-group list-group-flush" style={{ "backgroundColor": "inherit", paddingTop: "20px"}}>
+                            <li className="list-group-item font-weight-bold text-success" style={{ "backgroundColor": "inherit", "position": "relative", fontSize: "xx-large"}}>In Total
+                            <span style={{ "position": "absolute", "right":"0", paddingRight: "20px"}}>{stringTotalAmount}</span></li>
+                            <li className="list-group-item" style={{ "backgroundColor": "inherit", "position": "relative", "height": "3rem"}}><span style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>
+                                <button  type="button" className="btn btn-primary">BUY ALL</button>
+                                </span></li>
                     </ul>
                 </div>
             </div>
-        </div>
+        )
+    }
+
+    const getMyCart = () => {
+        const cartList = carts.map((product, index) => {
+            const selectedProduct = books.find((book) => {
+                return book._id === product._id;
+            });
+            const productPriceWithoutDelivery = addDollar((Number(deleteDollar(selectedProduct.price))*Number(product.amount)).toString());
+            const deliveryPrice = selectedProduct.delivery[product.delivery].price;
+            const totalAmount = addDollar(Number(deleteDollar(productPriceWithoutDelivery)) + Number(deleteDollar(deliveryPrice))).toString();
+
+            return(
+                <div className="product-details-container" key={index}>
+                    <h2 style={{"padding": "1rem", "position": "relative"}}>{selectedProduct.title}<span style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large", cursor: "pointer"}}>X</span></h2>
+                    <div style={{"padding": "1rem"}}>
+                    <ul className="list-group list-group-flush" style={{ "backgroundColor": "inherit", paddingTop: "20px"}}>
+                            <li className="list-group-item" style={{ "backgroundColor": "inherit", position: "relative"}}>Delivery Method:
+                            <span className="font-weight-bold" style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>{product.delivery}</span></li>
+                            <li className="list-group-item" style={{ "backgroundColor": "inherit", position: "relative"}}>Amount:
+                            <span className="font-weight-bold" style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>{product.amount}</span></li>
+                            <li className="list-group-item" style={{ "backgroundColor": "inherit", position: "relative"}}>Price:
+                            <span className="font-weight-bold" style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>{productPriceWithoutDelivery}</span></li>
+                            <li className="list-group-item" style={{ "backgroundColor": "inherit", position: "relative"}}>Delivery Cost:
+                            <span className="font-weight-bold" style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>{deliveryPrice}</span></li>
+                            <li className="list-group-item font-weight-bold text-success" style={{ "backgroundColor": "inherit", "position": "relative", fontSize: "xx-large"}}>Total
+                            <span style={{ "position": "absolute", "right":"0", paddingRight: "20px"}}>{totalAmount}</span></li>
+                            <li className="list-group-item" style={{ "backgroundColor": "inherit", "position": "relative", "height": "3rem"}}><span style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>
+                                <button  type="button" className="btn btn-primary">BUY NOW</button>
+                                </span></li>
+                        </ul>
+                    </div>
+                </div>
+            )
+        })
+
+        return (
+            <div className="product-details-page">
+                <img className="img-rounded img-list" src="line.png" alt="line.png"/>
+                <div className="product-details-path">
+                    <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Cart</div>
+                </div>
+                {cartList}
+                {getBuyAllFromCart()}
+            </div>
         )
     }
 
@@ -42,7 +102,7 @@ const Cart = (props) => {
             <div className="product-details-page">
             <img className="img-rounded img-list" src="line.png" alt="line.png"/>
             <div className="product-details-path">
-                <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a></span></div>
+                <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Cart</div>
             </div>
             <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
             
