@@ -3,6 +3,11 @@ import {books} from "./mockBooks"
 import useReactRouter from "use-react-router";
 
 const PaymentPage = () => {
+    const [localName, setLocalName] = useState(localStorage.getItem("user"));
+    const clearLocalStore = () => {
+        localStorage.clear();
+        setLocalName("");
+    }
     const paymentForm = () => {
         return (
             <>
@@ -106,6 +111,8 @@ const PaymentPage = () => {
         <img className="img-rounded img-list" src="line.png" alt="line.png"/>
         <div className="product-details-path">
             <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Payment</div>
+            <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
+                {localName ? `Log out ( ${localName} )` : ""}</div>
         </div>
         <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
         <h2 style={{"padding": "1rem"}}>Purchase Details</h2>

@@ -4,6 +4,11 @@ import {carts} from "./mockCart";
 import {books} from "./mockBooks"
 
 const Cart = (props) => {
+    const [localName, setLocalName] = useState(localStorage.getItem("user"));
+    const clearLocalStore = () => {
+        localStorage.clear();
+        setLocalName("");
+    }
     const { history } = useReactRouter();
     const lessOperator = '<';
 
@@ -90,6 +95,8 @@ const Cart = (props) => {
                 <img className="img-rounded img-list" src="line.png" alt="line.png"/>
                 <div className="product-details-path">
                     <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Cart</div>
+                    <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
+                    {localName ? `Log out ( ${localName} )` : ""}</div>
                 </div>
                 {cartList}
                 {getBuyAllFromCart()}

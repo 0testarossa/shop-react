@@ -9,6 +9,11 @@ import useReactRouter from "use-react-router";
 import {books} from "./mockBooks"
 
 export const App = (props) => {
+  const [localName, setLocalName] = useState(localStorage.getItem("user"));
+  const clearLocalStore = () => {
+    localStorage.clear();
+    setLocalName("");
+  }
   const { history } = useReactRouter();
   const [actualPage, setActualPage] = useState("1");
   console.log("props");
@@ -100,10 +105,11 @@ export const App = (props) => {
       })
       return(
         <div className="product-details-page">
-          <a href="/#/test">link</a>
         <img className="img-rounded img-list" src="line.png" alt="line.png"/>
         <div className="product-details-path">
             <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a></span></div>
+            <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
+                {localName ? `Log out ( ${localName} )` : ""}</div>
         </div>
         <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
           

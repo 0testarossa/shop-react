@@ -1,11 +1,27 @@
 import React, {useState} from 'react'
 import {books} from "./mockBooks"
 import useReactRouter from "use-react-router";
+import {useStateWithLocalStorage} from './Test';
 
 const ProductPage = (props) => {
+    const [localName, setLocalName] = useState(localStorage.getItem("user"));
+    const clearLocalStore = () => {
+        localStorage.clear();
+        setLocalName("");
+    }
     const lessOperator = '<';
     const { history } = useReactRouter();
     const [activeShipmentMethod, setActiveShipmentMethod] = useState(0)
+    const [cartState, setCartState] = useStateWithLocalStorage('cart')
+    const addItemToCart = () => {
+        const deliveryMethod = activeShipmentMethod === 0 ? "pickUpInStore" : activeShipmentMethod === 1 ? "parcelLocker" : "courier";
+        const itemToAdd = {
+                _id: bookId,
+                delivery: deliveryMethod,
+                amount: itemAmount
+        }
+            setCartState(previousCartState => setCartState([...(previousCartState || []), itemToAdd]));
+    }
 
     const getRecommendedProducts = () => {
         const allItems = [selectedBook._id];
@@ -164,7 +180,7 @@ const ProductPage = (props) => {
               </div>
               <div className="modal-footer" style={{backgroundColor: "rgb(193, 193, 193)"}}>
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">CLOSE</button>
-                <button data-toggle="modal" data-target="#questionModal" type="button" className="btn btn-primary" data-dismiss="modal">ADD TO CART</button>
+                <button onClick={() => addItemToCart()} data-toggle="modal" data-target="#questionModal" type="button" className="btn btn-primary" data-dismiss="modal">ADD TO CART</button>
               </div>
             </div>
           </div>
@@ -193,6 +209,8 @@ const ProductPage = (props) => {
         <img className="img-rounded img-list" src="line.png" alt="line.png"/>
         <div className="product-details-path">
             <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} {selectedBook.title}</div>
+            <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
+                {localName ? `Log out ( ${localName} )` : ""}</div>
         </div>
         <div className="product-details-container">
             <div className="d-flex">
@@ -210,7 +228,11 @@ const ProductPage = (props) => {
                             onBlur={(event) => validateItemAmount(event)} value={itemAmount} onChange={(event) => getNewItemAmount(event)}/>
                             <span style={{ backgroundColor: "inherit", cursor: "pointer", padding: "12px"}} onClick={() => plusOrMinusItemAmount("minus")}>-</span>
                             </span>
-                        <span data-toggle="modal" data-target="#exampleModal" className="font-weight-bold plus-minus-button" style={{ marginLeft: "30px", backgroundColor: "#6593F5", cursor: "pointer"}}>ADD TO CART</span></li>
+                        {localName ? 
+                        <span data-toggle="modal" data-target="#exampleModal" className="font-weight-bold plus-minus-button" style={{ marginLeft: "30px", backgroundColor: "#6593F5", cursor: "pointer"}} >ADD TO CART</span>
+                        :<span className="font-weight-bold plus-minus-button" style={{ marginLeft: "30px", backgroundColor: "grey"}} >ADD TO CART</span>
+                        }
+                        </li>
                 </ul>
             </div>
         </div>

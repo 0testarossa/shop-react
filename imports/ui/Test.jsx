@@ -1,6 +1,6 @@
 import React from 'react';
 
-const useStateWithLocalStorage = localStorageKey => {
+export const useStateWithLocalStorage = localStorageKey => {
     const [value, setValue] = React.useState(
       localStorage.getItem(localStorageKey) || ''
     );
@@ -13,9 +13,8 @@ const useStateWithLocalStorage = localStorageKey => {
   };
 
 const Test = (props) => {
-    const [user, setUser] = useStateWithLocalStorage(
-        'userName'
-      )
+    const [user, setUser] = useStateWithLocalStorage('userName')
+
     const changeStatus2 = () => {
         setUser("Ana");
     }

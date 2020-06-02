@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Users } from '../api/users.js';
+import useReactRouter from "use-react-router";
 
 const Register = (props) => {
     const lessOperator = '<';
+    const { history } = useReactRouter();
     const [loginInput, setLoginInput] = useState(""); 
-    const [passwordInput, setPasswordInput] = useState(""); 
+    const [passwordInput, setPasswordInput] = useState("");
+    // const [user, setUser] = useStateWithLocalStorage('')
+
+    const onRegister = (event) => {
+        const existingLogin = props.users.find((user) => {
+            return user.login === loginInput;
+        })
+        if(!existingLogin) {
+            Users.insert({
+                login: loginInput,
+                password: passwordInput
+              });
+        }
+        history.push(`/login`);
+    }
 
     const onChangeLoginInput = (event) => {
         const data = event.target.value
@@ -53,7 +71,7 @@ const Register = (props) => {
                 </tbody>
                 </table>
                 <div className="d-flex" style={{width: "100%", justifyContent: "center"}}>
-                    <div style={{width: "60%", fontWeight: "900"}} type="button" className="btn btn-primary" >Register</div>
+                    <div onClick={(event) => onRegister(event)} style={{width: "60%", fontWeight: "900"}} type="button" className="btn btn-primary" >Register</div>
                 </div>
                 <div style={{padding: "30px 0px"}}>Have account? Log in <a href="/#/login">HERE</a> now</div>
             </div>
@@ -62,4 +80,9 @@ const Register = (props) => {
     )
 }
 
-export default Register;
+export default withTracker(() => {
+    return {
+      users: Users.find({}).fetch(),
+    //   stories: Stories.find({}, { sort: { favourites: -1 } }).fetch(),
+    };
+  })(Register);

@@ -1,9 +1,41 @@
 import React, { useState } from 'react';
+import useReactRouter from "use-react-router";
+import { withTracker } from 'meteor/react-meteor-data';
+import { Users } from '../api/users.js';
+import {useStateWithLocalStorage} from './Test';
+
+// const useStateWithLocalStorage = localStorageKey => {
+//     const [value, setValue] = React.useState(
+//       localStorage.getItem(localStorageKey) || ''
+//     );
+   
+//     React.useEffect(() => {
+//       localStorage.setItem(localStorageKey, value);
+//     }, [value]);
+   
+//     return [value, setValue];
+//   };
 
 const Login = (props) => {
     const lessOperator = '<';
+    const { history } = useReactRouter();
     const [loginInput, setLoginInput] = useState(""); 
     const [passwordInput, setPasswordInput] = useState(""); 
+    const [user, setUser] = useStateWithLocalStorage('user')
+
+    const onLogin = (event) => {
+        const existingLogin = props.users.find((user) => {
+            return user.login === loginInput;
+        })
+        if(existingLogin && existingLogin.password === passwordInput) {
+            const promise = new Promise(function(resolve, reject) {
+                setUser(loginInput);
+                resolve(true);
+              })
+            promise.then(bool => history.push(`/`));
+              
+        }
+    }
 
     const onChangeLoginInput = (event) => {
         const data = event.target.value
@@ -53,7 +85,7 @@ const Login = (props) => {
                 </tbody>
                 </table>
                 <div className="d-flex" style={{width: "100%", justifyContent: "center"}}>
-                    <div style={{width: "60%", fontWeight: "900"}} type="button" className="btn btn-primary" >Log in</div>
+                    <div onClick={(event) => onLogin(event)} style={{width: "60%", fontWeight: "900"}} type="button" className="btn btn-primary" >Log in</div>
                 </div>
                 <div style={{padding: "30px 0px"}}>No account? Create a new one <a href="/#/register">HERE</a></div>
             </div>
@@ -62,4 +94,8 @@ const Login = (props) => {
     )
 }
 
-export default Login;
+export default withTracker(() => {
+    return {
+      users: Users.find({}).fetch(),
+    };
+  })(Login);
