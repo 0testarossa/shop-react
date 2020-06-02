@@ -9,10 +9,13 @@ import { Route, HashRouter, Switch } from 'react-router-dom';
 import ProductPage from '../imports/ui/ProductPage';
 import Cart from '../imports/ui/Cart';
 import PaymentPage from '../imports/ui/PaymentPage';
-// global.Popper = popper // uncomment when modals etc. are not working properly
+import Test from '../imports/ui/Test';
+import Login from '../imports/ui/Login';
+import Register from '../imports/ui/Register';
  
 
 Meteor.startup(() => {
+
    render(
     // <Provider store={store}>
     //   <Router history={history}>
@@ -33,6 +36,9 @@ Meteor.startup(() => {
         <Route path="/product/:id" exact component={ProductPage}/>
         <Route path="/cart" exact component={Cart}/>
         <Route path="/payment" exact component={PaymentPage}/>
+        <Route path="/test" exact component={Test}/>
+        <Route path="/login" exact component={Login}/>
+        <Route path="/register" exact component={Register}/>
       </Switch>
     </HashRouter>,
     document.getElementById('react-target'),

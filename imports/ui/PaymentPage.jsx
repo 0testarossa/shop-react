@@ -109,11 +109,6 @@ const PaymentPage = () => {
         </div>
         <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
         <h2 style={{"padding": "1rem"}}>Purchase Details</h2>
-        
-        {/* <div className="site-pages d-flex" style={{justifyContent: "center", position: "relative", alignItems: "center"}}>
-                    <img style={{height: "40rem"}} className="img-rounded img-list" src="basket1.png" alt="basket1.png"/>
-                    <div style={{position: "absolute", fontWeight: "700", fontSize: "xx-large"}}>Your card is empty. Check our latests offers <a href="/">HERE</a></div>
-        </div> */}
         <table className="table table-hover table-striped table-dark">
           <tbody>
             {paymentForm()}

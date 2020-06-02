@@ -16,8 +16,10 @@
     "popper.js": "^1.16.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-redux": "^7.2.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
     "use-react-router": "^1.0.7"
   },
   "meteor": {

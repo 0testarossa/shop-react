@@ -100,6 +100,7 @@ export const App = (props) => {
       })
       return(
         <div className="product-details-page">
+          <a href="/#/test">link</a>
         <img className="img-rounded img-list" src="line.png" alt="line.png"/>
         <div className="product-details-path">
             <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a></span></div>
