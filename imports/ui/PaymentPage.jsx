@@ -2,12 +2,22 @@ import React, {useState} from 'react'
 import {books} from "./mockBooks"
 import useReactRouter from "use-react-router";
 
-const PaymentPage = () => {
+const PaymentPage = (props) => {
+    console.log("payment props");
+    console.log(props);
     const [localName, setLocalName] = useState(localStorage.getItem("user"));
+    const productId = props.location?.state?.productId;
+    const productPrice = props.location?.state?.productPrice;
+    const { history } = useReactRouter();
     const clearLocalStore = () => {
         localStorage.clear();
         setLocalName("");
     }
+
+    const backToHomepage = () => {
+        history.push("/");
+    }
+
     const paymentForm = () => {
         return (
             <>
@@ -98,11 +108,36 @@ const PaymentPage = () => {
                 </td>
                 <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
                 {/* <input className="form-control" style={{"width": "100%"}}value="5"></input> */}
-                <div>Do dopisania</div>
+                <div>{productPrice}</div>
                 </td>
             </tr>
         </>
           )
+    }
+
+    const getPaymentPage = () => {
+        if(productPrice) {
+            return (
+                <>
+                <h2 style={{"padding": "1rem"}}>Purchase Details</h2>
+                <table className="table table-hover table-striped table-dark">
+                <tbody>
+                    {paymentForm()}
+                </tbody>
+                </table>
+                <div className="d-flex" style={{width: "100%", justifyContent: "center", paddingTop: "1rem"}}>
+                    <div onClick={(event) => backToHomepage(event)} style={{width: "60%", fontWeight: "900", height: "3rem"}} type="button" className="btn btn-primary" >Back to Shop</div>
+                </div>
+                </>
+            );
+        } else {
+            return (
+                <div className="site-pages d-flex" style={{justifyContent: "center", position: "relative", alignItems: "center"}}>
+                        <img style={{height: "40rem"}} className="img-rounded img-list" src="redirect.png" alt="basket1.png"/>
+                        <div style={{position: "absolute", fontWeight: "700", fontSize: "xx-large"}}>You shoudn't be here. Please, go to our <a href="/">SHOP</a></div>
+                </div>
+            )
+        }
     }
 
     const lessOperator = '<';
@@ -115,12 +150,7 @@ const PaymentPage = () => {
                 {localName ? `Log out ( ${localName} )` : ""}</div>
         </div>
         <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
-        <h2 style={{"padding": "1rem"}}>Purchase Details</h2>
-        <table className="table table-hover table-striped table-dark">
-          <tbody>
-            {paymentForm()}
-          </tbody>
-        </table>
+            {getPaymentPage()}
         </div>
         </div>
     )

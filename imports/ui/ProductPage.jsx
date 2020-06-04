@@ -20,7 +20,10 @@ const ProductPage = (props) => {
                 delivery: deliveryMethod,
                 amount: itemAmount
         }
-            setCartState(previousCartState => setCartState([...(previousCartState || []), itemToAdd]));
+            const oldValue = cartState ? JSON.parse(cartState) : [];
+            console.log("oldValue");
+            console.log(oldValue);
+            setCartState(previousCartState => setCartState(JSON.stringify([...oldValue, itemToAdd])));
     }
 
     const getRecommendedProducts = () => {
