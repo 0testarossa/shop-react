@@ -227,7 +227,7 @@ const ProductPage = (props) => {
                 <div className="product-details-path">
                     <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} {selectedBook.title}</div>
                     <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
-                        {localName ? `Log out ( ${localName} )` : ""}</div>
+                    {localName ? `Log out ( ${localName} )` : <span onClick={() => history.push("/login")}>Log in</span>}</div>
                 </div>
                 <div className="product-details-container">
                     <div className="d-flex">
