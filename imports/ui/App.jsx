@@ -4,11 +4,13 @@ import { Info } from './Info.jsx';
 import { Story } from './Story.jsx';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Stories } from '../api/stories.js';
+import { Books } from '../api/books.js';
 import ReactDOM from 'react-dom';
 import useReactRouter from "use-react-router";
-import {books} from "./mockBooks"
+// import {books} from "./mockBooks"
 
 export const App = (props) => {
+  const books = props.books;
   const [localName, setLocalName] = useState(localStorage.getItem("user"));
   const clearLocalStore = () => {
     localStorage.clear();
@@ -16,9 +18,8 @@ export const App = (props) => {
   }
   const { history } = useReactRouter();
   const [actualPage, setActualPage] = useState("1");
-  console.log("props");
-  console.log(props);
   const inputEl = useRef(null);
+
   const handleSubmit = (event) => {
     event.preventDefault();
      const text = ReactDOM.findDOMNode(inputEl.current).value.trim();
@@ -146,7 +147,8 @@ export const App = (props) => {
 export default withTracker(() => {
   return {
     // stories: Stories.find({}).fetch(),
-    stories: Stories.find({}, { sort: { favourites: -1 } }).fetch(),
+    // stories: Stories.find({}, { sort: { favourites: -1 } }).fetch(),
+    books: Books.find({}, { sort: { _id: -1 } }).fetch(),
   };
 })(App);
 

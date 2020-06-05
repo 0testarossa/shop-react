@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {books} from "./mockBooks"
 import useReactRouter from "use-react-router";
 
 const PaymentPage = (props) => {

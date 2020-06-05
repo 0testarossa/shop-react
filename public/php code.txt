@@ -1,0 +1,103 @@
+public function actionDotpay2()
+    {
+        \Yii::$app->language = 'pl';
+
+        $request = \Yii::$app->request;
+        $post = $request->post();
+
+        if (!empty($post)) {
+            $orderID = $request->post('control', 0);
+            /** @var Order $order */
+            $order = Order::findOne($orderID);
+            if (!is_null($order)) {
+                $transaction = new Transaction();
+                $transaction->shop_id = $request->post('id');
+                $transaction->order_id = $order->id;
+                $transaction->operation_number = $request->post('operation_number');
+                $transaction->operation_type = $request->post('operation_type');
+                $transaction->operation_status = $request->post('operation_status');
+                $transaction->operation_amount = $request->post('operation_amount');
+                $transaction->operation_currency = $request->post('operation_currency');
+                $transaction->operation_original_amount = $request->post('operation_original_amount');
+                $transaction->operation_original_currency = $request->post('operation_original_currency');
+                $transaction->operation_datetime = $request->post('operation_datetime');
+                $transaction->control = $request->post('control');
+                $transaction->description = $request->post('description');
+                $transaction->email = $request->post('email');
+                $transaction->p_info = $request->post('p_info');
+                $transaction->p_email = $request->post('p_email');
+                $transaction->channel = $request->post('channel');
+                $transaction->signature = $request->post('signature');
+
+                VarDumper::dump($transaction);
+
+                if (!$transaction->save()) {
+                    \Yii::error('Transaction save error: ' . VarDumper::dumpAsString($transaction->getErrors()));
+                }
+
+                if ($transaction->operation_type == 'payment') {
+                    if (($transaction->operation_status == 'completed') or ($transaction->operation_status == 'rejected')) {
+                        if ($transaction->operation_status == 'completed') {
+                            if (is_null($order->paid)) {
+                                $order->paid = new Expression('NOW()');
+                                VarDumper::dump($order->paid);
+                                //                                $order->save();
+
+                                foreach ($order->tickets as $ticket) {
+                                    $ticket->ticket_number = sprintf(
+                                        '%d%04d%d%05d%d',
+                                        rand(0, 9),
+                                        $order->event_id,
+                                        rand(0, 9),
+                                        $ticket->id,
+                                        rand(0, 9)
+                                    );
+                                    $ticket->valid = 1;
+                                    //                                    $ticket->save();
+                                    echo "New Ticker numer: " . $ticket->ticket_number . "<br>";
+                                }
+
+                                //                                $this->sendPdf($order->event, $order);
+                            }
+                        }
+
+                        echo 'OK';
+                    }
+                }
+            } else {
+                echo "Unknown order: " . $orderID;
+            }
+        } else {
+            return $this->render("dotpay2");
+        }
+    }
+
+
+ <div class="container" style="padding: 40px;">
+    Empty POST!<br>
+    <hr>
+
+    <form method="post">
+        <input type="hidden" name="id" value="149610">
+        <input type="hidden" name="operation_number" value="M1672-7805">
+        <input type="hidden" name="operation_type" value="payment">
+        <input type="hidden" name="operation_status" value="completed">
+        <input type="hidden" name="operation_amount" value="53.04">
+
+        <input type="hidden" name="operation_currency" value="PLN">
+        <input type="hidden" name="operation_original_amount" value="53.04">
+        <input type="hidden" name="operation_original_currency" value="PLN">
+        <input type="hidden" name="operation_datetime" value="2015-11-26+13%3A01%3A00">
+        <input type="hidden" name="control" value="139">
+        <input type="hidden" name="description" value="Bilet+wst%C4%99pu+-+Targi+%C5%9Alubne+Pozna%C5%84+2016">
+        <input type="hidden" name="email" value="mery85%40tlen.pl">
+        <input type="hidden" name="p_info" value="targi-slubne.pl">
+        <input type="hidden" name="p_email" value="bilety%targi-slubne.pl">
+        <input type="hidden" name="channel" value="6">
+
+        <input type="hidden" name="signature" value="992707dba826c197d8dd77b83385c09755793db9060ca65968cad0f9f77fe102">
+
+
+        <input type="submit" value="Send">
+    </form>
+</div>

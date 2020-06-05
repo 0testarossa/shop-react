@@ -1,10 +1,13 @@
 import React, {useState} from 'react'
 import useReactRouter from "use-react-router";
 import {carts} from "./mockCart";
-import {books} from "./mockBooks"
+// import {books} from "./mockBooks"
 import {useStateWithLocalStorage} from './Test';
+import { Books } from '../api/books.js';
+import { withTracker } from 'meteor/react-meteor-data';
 
 const Cart = (props) => {
+    const books = props.books;
     const [localName, setLocalName] = useState(localStorage.getItem("user"));
     const [cartsState, setCartsState] = useStateWithLocalStorage('cart')
     const clearLocalStore = () => {
@@ -173,4 +176,8 @@ const Cart = (props) => {
     );
 }
 
-export default Cart;
+export default withTracker(() => {
+    return {
+      books: Books.find({}, { sort: { _id: -1 } }).fetch(),
+    };
+  })(Cart);

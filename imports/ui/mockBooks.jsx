@@ -6,7 +6,7 @@ export const books = [
       price: "50$",
       header: "RECOMMENDED",
       availability: "Available",
-      image: "book1.png",
+      image: "book42.png",
       _id: "1",
       deliveryTime: "7-14 days",
       state: "new",
