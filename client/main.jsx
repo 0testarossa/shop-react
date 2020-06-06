@@ -12,6 +12,9 @@ import PaymentPage from '../imports/ui/PaymentPage';
 import Test from '../imports/ui/Test';
 import Login from '../imports/ui/Login';
 import Register from '../imports/ui/Register';
+import TestPayment2 from '../imports/ui/TestPayment2';
+import AfterPayment from '../imports/ui/AfterPayment';
+import PaymentForm from '../imports/ui/PaymentForm';
  
 
 Meteor.startup(() => {
@@ -35,10 +38,12 @@ Meteor.startup(() => {
         <Route path="/product" exact component={ProductPage}/>
         <Route path="/product/:id" exact component={ProductPage}/>
         <Route path="/cart" exact component={Cart}/>
-        <Route path="/payment" exact component={PaymentPage}/>
+        <Route path="/payment" exact component={PaymentForm}/>
         <Route path="/test" exact component={Test}/>
         <Route path="/login" exact component={Login}/>
         <Route path="/register" exact component={Register}/>
+        <Route path="/pay" exact component={PaymentPage}/>
+        <Route path="/afterPayment" exact component={AfterPayment}/>
       </Switch>
     </HashRouter>,
     document.getElementById('react-target'),

@@ -74,6 +74,19 @@ html {
   background-color: #f3f3f321;
 }
 
+
+
+
+
+
+
+.css-148o527-ItemComponent.react-dropdown-select-item-selected {
+  background: #ffffff !important; 
+  color: #000000 !important; 
+}
+
+
+
 /* body {
   padding: 10px;
   font-family: sans-serif;

@@ -18,17 +18,43 @@ const Cart = (props) => {
     const lessOperator = '<';
     console.log(cartsState && JSON.parse(cartsState));
 
+    const buyAllProductsDotPay = (productPrice) => {
+        // const promise = new Promise(function(resolve, reject) {
+        //     setCartsState(previousValue => setCartsState(JSON.stringify([])));
+        //     resolve(true);
+        //   })
+        // promise.then(bool => history.push({
+        history.push({
+            pathname: '/payment',
+            search: '',
+            state: { productId: "all", productPrice }
+          });
+    }
+
     const buyAllProducts = (productPrice) => {
         const promise = new Promise(function(resolve, reject) {
             setCartsState(previousValue => setCartsState(JSON.stringify([])));
             resolve(true);
           })
         promise.then(bool => history.push({
-            pathname: '/payment',
+            pathname: '/pay',
             search: '',
             // search: '?the=search',
             state: { productPrice }
           }));
+    }
+
+    const buySelectedProductDotPay = (productId, productCartIndex, productPrice) => {
+        // const promise = new Promise(function(resolve, reject) {
+        //     deleteProductFromCart(productCartIndex)
+        //     resolve(true);
+        //   })
+        // promise.then(bool => history.push({
+        history.push({
+            pathname: '/payment',
+            search: '',
+            state: { productId:productCartIndex, productPrice }
+          });
     }
 
     const buySelectedProduct = (productId, productCartIndex, productPrice) => {
@@ -37,7 +63,7 @@ const Cart = (props) => {
             resolve(true);
           })
         promise.then(bool => history.push({
-            pathname: '/payment',
+            pathname: '/pay',
             search: '',
             // search: '?the=search',
             state: { productId, productPrice }
@@ -51,7 +77,7 @@ const Cart = (props) => {
         setCartsState(previousValue => setCartsState(JSON.stringify(updatedArray)));
     }
 
-    const deleteDollar = (amount) => {
+    export const deleteDollar = (amount) => {
         const correctNumber = amount.split("").map((char) => {
             if(char !== "$") {
                 return char
@@ -88,7 +114,7 @@ const Cart = (props) => {
                             <li className="list-group-item font-weight-bold text-success" style={{ "backgroundColor": "inherit", "position": "relative", fontSize: "xx-large"}}>In Total
                             <span style={{ "position": "absolute", "right":"0", paddingRight: "20px"}}>{stringTotalAmount}</span></li>
                             <li className="list-group-item" style={{ "backgroundColor": "inherit", "position": "relative", "height": "3rem"}}><span style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>
-                                <button onClick={() => buyAllProducts(stringTotalAmount)} type="button" className="btn btn-primary">BUY ALL</button>
+                                <button onClick={() => buyAllProductsDotPay(stringTotalAmount)} type="button" className="btn btn-primary">BUY ALL</button>
                                 </span></li>
                     </ul>
                 </div>
@@ -103,7 +129,7 @@ const Cart = (props) => {
                 const selectedProduct = books.find((book) => {
                     return book._id === product._id;
                 });
-                const productPriceWithoutDelivery = addDollar((Number(deleteDollar(selectedProduct.price))*Number(product.amount)).toString());
+                const productPriceWithoutDelivery = addDollar((Number(deleteDollar(selectedProduct?.price))*Number(product.amount)).toString());
                 const deliveryPrice = selectedProduct.delivery[product.delivery].price;
                 const totalAmount = addDollar(Number(deleteDollar(productPriceWithoutDelivery)) + Number(deleteDollar(deliveryPrice))).toString();
     
@@ -123,7 +149,7 @@ const Cart = (props) => {
                                 <li className="list-group-item font-weight-bold text-success" style={{ "backgroundColor": "inherit", "position": "relative", fontSize: "xx-large"}}>Total
                                 <span style={{ "position": "absolute", "right":"0", paddingRight: "20px"}}>{totalAmount}</span></li>
                                 <li className="list-group-item" style={{ "backgroundColor": "inherit", "position": "relative", "height": "3rem"}}><span style={{ "position": "absolute", "right":"0", paddingRight: "20px", fontSize: "large"}}>
-                                    <button onClick={() => buySelectedProduct(product._id, index, totalAmount)} type="button" className="btn btn-primary">BUY NOW</button>
+                                    <button onClick={() => buySelectedProductDotPay(product._id, index, totalAmount)} type="button" className="btn btn-primary">BUY NOW</button>
                                     </span></li>
                             </ul>
                         </div>
@@ -151,7 +177,9 @@ const Cart = (props) => {
             <div className="product-details-page">
             <img className="img-rounded img-list" src="line.png" alt="line.png"/>
             <div className="product-details-path">
-                <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Cart</div>
+                    <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Cart</div>
+                    <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
+                    {localName ? `Log out ( ${localName} )` : <span onClick={() => history.push("/login")}>Log in</span>}</div>
             </div>
             <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
             
