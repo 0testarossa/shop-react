@@ -1,10 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 const AfterPayment = (props) => {
     const lessOperator = '<';
-    console.log("afterPaymentProps");
-    console.log(props);
-    console.log(window.location.href)
     const regex = /status=OK/;
     const url = window.location.href;
     const result = regex.test(url);

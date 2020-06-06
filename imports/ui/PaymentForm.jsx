@@ -3,7 +3,7 @@ import axios from "axios";
 import useReactRouter from "use-react-router";
 import CurrencyInput from 'react-currency-input-field';
 import Select from "react-dropdown-select";
-import {useStateWithLocalStorage} from './Test';
+import {useStateWithLocalStorage} from './Storage';
 import { Books } from '../api/books.js';
 import { withTracker } from 'meteor/react-meteor-data';
 
@@ -15,6 +15,11 @@ const PaymentForm = (props) => {
     const productId = props.location?.state?.productId;
     const productPrice = props.location?.state?.productPrice;
     const lessOperator = '<';
+
+    const clearLocalStore = () => {
+        localStorage.clear();
+        setLocalName("");
+      }
 
     const deleteDollar = (amount) => {
         if(amount) {
@@ -108,30 +113,6 @@ const PaymentForm = (props) => {
             "channel_id": channel
         }
 
-        const data = {
-            "order": {
-                "amount": "22.99",
-                "currency": "USD",
-                "description": "test"
-            },
-            "seller": {
-                "account_id": "771935",
-                "url": "http://localhost:3000/#/afterPayment"
-            },
-            "payer": {
-                "first_name": "John",
-                "last_name": "Doe",
-                "email": "johndoemail@example.com"
-            },
-            "payment_method": {
-                "channel_id": "73"
-            },
-            "request_context": {
-                    "ip": "127.0.0.1",
-                    "language": "pl"
-            }
-        }
-
         const myData = {
             order,
             seller,
@@ -143,11 +124,6 @@ const PaymentForm = (props) => {
             username: "amup5@poczta.onet.pl",
             password: "czeczuga5"
         }
-
-        console.log("correc");
-        console.log(data);
-        console.log("wrong");
-        console.log(myData)
         
         if(productId === "all") {
             setCartsState(previousValue => setCartsState(JSON.stringify([])));
@@ -157,9 +133,6 @@ const PaymentForm = (props) => {
             })
             setCartsState(previousValue => setCartsState(JSON.stringify(updatedArray)));
         }
-
-        console.log("data");
-        console.log(myData)
 
         axios({
             method: 'POST',
@@ -175,7 +148,6 @@ const PaymentForm = (props) => {
             }
             console.log(response);
         }).catch(error => {
-            console.log("MY ERROR");
             console.log(error);
           });
     }
@@ -183,15 +155,6 @@ const PaymentForm = (props) => {
     const getForm = () => {
         return (
             <>
-            <div className="product-details-page">
-            <img className="img-rounded img-list" src="line.png" alt="line.png"/>
-            <div className="product-details-path">
-                    <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Payment</div>
-                    <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
-                    {localName ? `Log out ( ${localName} )` : <span onClick={() => history.push("/login")}>Log in</span>}</div>
-                </div>
-            <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
-            
             <div className="site-pages d-flex flex-column" style={{justifyContent: "center", position: "relative", alignItems: "center"}}>
                 <table className="table table-hover table-striped table-dark">
                 <tbody>
@@ -239,7 +202,6 @@ const PaymentForm = (props) => {
                     Amount:
                     </td>
                     <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
-                    {/* <input className="form-control" style={{"width": "100%"}}value="5"></input> */}
                     <div> {/* amount */}
                     <CurrencyInput
                     className="form-control"
@@ -264,7 +226,6 @@ const PaymentForm = (props) => {
                     Currency:
                     </td>
                     <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
-                    {/* <input className="form-control" style={{"width": "100%"}}value="5"></input> */}
                     <div> {/* PLN */}
                     <Select style={{"background": "white"}}
                     options={options} onChange={(values) => setCurrency(values[0].name)} labelField="name" values={[{name: "USD"}]}/></div>
@@ -279,7 +240,6 @@ const PaymentForm = (props) => {
                     Description:
                     </td>
                     <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
-                    {/* <input className="form-control" style={{"width": "100%"}}value="5"></input> */}
                     <textarea onChange={(event) => setDescription(event.target.value)}className="form-control" style={{"width": "100%"}} id="" name="" rows="4" cols="50" placeholder="Payment description"></textarea>
                     </td>
                 </tr>
@@ -290,19 +250,40 @@ const PaymentForm = (props) => {
                 <p><br/><button onClick={() => tryRequest()} style={{width: "100%", fontWeight: "900"}} type="button" className="btn btn-primary">Pay Now</button></p>
                 </div>
             </div>
-            </div>
-            </div>
         </>
         )
     }
-    console.log("channel");
-    console.log(channel);
 
-    if(productId && productPrice) {
-        return getForm()
-    } else {
-        return getForm()
+    const getEmptyForm = () => {
+        return (
+                <div className="site-pages d-flex" style={{justifyContent: "center", position: "relative", alignItems: "center"}}>
+                                <img style={{height: "40rem"}} className="img-rounded img-list" src="redirect.png" alt="basket1.png"/>
+                                <div style={{position: "absolute", fontWeight: "700", fontSize: "xx-large"}}>You shoudn't be here. Please, go to our <a href="/">SHOP</a></div>
+                </div>
+        )
     }
+
+    const getPageContent = () => {
+        if(productId !== undefined && productPrice) {
+            return getForm()
+        } else {
+            return getEmptyForm()
+        }
+    }
+
+    return (
+        <div className="product-details-page">
+        <img className="img-rounded img-list" src="line.png" alt="line.png"/>
+        <div className="product-details-path">
+            <div style={{"paddingLeft": "30px"}}><span className="font-weight-bold"><a href="/">Home</a>  </span> {lessOperator} Payment</div>
+            <div style={{"cursor": "pointer", "paddingRight": "30px"}} onClick={() => clearLocalStore()}> 
+            {localName ? `Log out ( ${localName} )` : <span onClick={() => history.push("/login")}>Log in</span>}</div>
+        </div>
+        <div className="product-details-container" style={{padding: "50px 10px", backgroundColor: "rgba(255,255,255,.09)"}}>
+            {getPageContent()}
+        </div>
+        </div>
+    )
 }
 
 export default withTracker(() => {

@@ -8,7 +8,6 @@ const Register = (props) => {
     const { history } = useReactRouter();
     const [loginInput, setLoginInput] = useState(""); 
     const [passwordInput, setPasswordInput] = useState("");
-    // const [user, setUser] = useStateWithLocalStorage('')
 
     const onRegister = (event) => {
         const existingLogin = props.users.find((user) => {
@@ -83,6 +82,5 @@ const Register = (props) => {
 export default withTracker(() => {
     return {
       users: Users.find({}).fetch(),
-    //   stories: Stories.find({}, { sort: { favourites: -1 } }).fetch(),
     };
   })(Register);

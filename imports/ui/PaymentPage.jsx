@@ -2,8 +2,6 @@ import React, {useState} from 'react'
 import useReactRouter from "use-react-router";
 
 const PaymentPage = (props) => {
-    console.log("payment props");
-    console.log(props);
     const [localName, setLocalName] = useState(localStorage.getItem("user"));
     const productId = props.location?.state?.productId;
     const productPrice = props.location?.state?.productPrice;

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
-// import {books} from "./mockBooks"
 import useReactRouter from "use-react-router";
-import {useStateWithLocalStorage} from './Test';
+import {useStateWithLocalStorage} from './Storage';
 import { Books } from '../api/books.js';
 import { withTracker } from 'meteor/react-meteor-data';
 
@@ -24,8 +23,6 @@ const ProductPage = (props) => {
                 amount: itemAmount
         }
             const oldValue = cartState ? JSON.parse(cartState) : [];
-            console.log("oldValue");
-            console.log(oldValue);
             setCartState(previousCartState => setCartState(JSON.stringify([...oldValue, itemToAdd])));
     }
 
@@ -107,10 +104,6 @@ const ProductPage = (props) => {
         setActiveShipmentMethod(methodIndex);
     }
 
-    const afterAddingToCart = () => {
-
-    }
-
     const changeSite = (site) => {
         if(site === "productList") {
             history.push("/");
@@ -118,13 +111,6 @@ const ProductPage = (props) => {
             history.push("/cart");
         }
     }
-
-    console.log("props");
-    console.log(props);
-    console.log(books)
-    console.log(selectedBook);
-    console.log(recommendedProducts);
-    console.log("endprops")
     
     if(books && selectedBook && recommendedProducts) {
         return(

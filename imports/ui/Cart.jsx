@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import useReactRouter from "use-react-router";
-import {carts} from "./mockCart";
-// import {books} from "./mockBooks"
-import {useStateWithLocalStorage} from './Test';
+import {useStateWithLocalStorage} from './Storage';
 import { Books } from '../api/books.js';
 import { withTracker } from 'meteor/react-meteor-data';
 
@@ -16,14 +14,8 @@ const Cart = (props) => {
     }
     const { history } = useReactRouter();
     const lessOperator = '<';
-    console.log(cartsState && JSON.parse(cartsState));
 
     const buyAllProductsDotPay = (productPrice) => {
-        // const promise = new Promise(function(resolve, reject) {
-        //     setCartsState(previousValue => setCartsState(JSON.stringify([])));
-        //     resolve(true);
-        //   })
-        // promise.then(bool => history.push({
         history.push({
             pathname: '/payment',
             search: '',
@@ -45,11 +37,6 @@ const Cart = (props) => {
     }
 
     const buySelectedProductDotPay = (productId, productCartIndex, productPrice) => {
-        // const promise = new Promise(function(resolve, reject) {
-        //     deleteProductFromCart(productCartIndex)
-        //     resolve(true);
-        //   })
-        // promise.then(bool => history.push({
         history.push({
             pathname: '/payment',
             search: '',

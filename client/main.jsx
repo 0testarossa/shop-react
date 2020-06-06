@@ -1,18 +1,14 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
-// import { App } from '/imports/ui/App';
 import App from '../imports/ui/App';
 import 'bootstrap'
-import popper from 'popper.js'
 import { Route, HashRouter, Switch } from 'react-router-dom';
 import ProductPage from '../imports/ui/ProductPage';
 import Cart from '../imports/ui/Cart';
 import PaymentPage from '../imports/ui/PaymentPage';
-import Test from '../imports/ui/Test';
 import Login from '../imports/ui/Login';
 import Register from '../imports/ui/Register';
-import TestPayment2 from '../imports/ui/TestPayment2';
 import AfterPayment from '../imports/ui/AfterPayment';
 import PaymentForm from '../imports/ui/PaymentForm';
  
@@ -20,18 +16,6 @@ import PaymentForm from '../imports/ui/PaymentForm';
 Meteor.startup(() => {
 
    render(
-    // <Provider store={store}>
-    //   <Router history={history}>
-    //     <div>
-    //       <ul>
-    //         <li><Link to="/">Home</Link></li>
-    //         <li><Link to="/login">Login</Link></li>
-    //       </ul>
-    //       <Route exact path="/" component={App} />
-    //       <Route path="/login" component={App} />
-    //     </div>
-    //   </Router>
-    // </Provider>,
     <HashRouter>
       <Switch>
         <Route path="/" exact component={App}/>
@@ -39,7 +23,6 @@ Meteor.startup(() => {
         <Route path="/product/:id" exact component={ProductPage}/>
         <Route path="/cart" exact component={Cart}/>
         <Route path="/payment" exact component={PaymentForm}/>
-        <Route path="/test" exact component={Test}/>
         <Route path="/login" exact component={Login}/>
         <Route path="/register" exact component={Register}/>
         <Route path="/pay" exact component={PaymentPage}/>
@@ -48,5 +31,4 @@ Meteor.startup(() => {
     </HashRouter>,
     document.getElementById('react-target'),
   );
-  // render(<App/>, document.getElementById('react-target'));
 });

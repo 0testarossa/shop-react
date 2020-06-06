@@ -2,19 +2,7 @@ import React, { useState } from 'react';
 import useReactRouter from "use-react-router";
 import { withTracker } from 'meteor/react-meteor-data';
 import { Users } from '../api/users.js';
-import {useStateWithLocalStorage} from './Test';
-
-// const useStateWithLocalStorage = localStorageKey => {
-//     const [value, setValue] = React.useState(
-//       localStorage.getItem(localStorageKey) || ''
-//     );
-   
-//     React.useEffect(() => {
-//       localStorage.setItem(localStorageKey, value);
-//     }, [value]);
-   
-//     return [value, setValue];
-//   };
+import {useStateWithLocalStorage} from './Storage';
 
 const Login = (props) => {
     const lessOperator = '<';

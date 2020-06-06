@@ -1,13 +1,8 @@
-import React, { useRef, useState } from 'react'
-import { Hello } from './Hello.jsx';
-import { Info } from './Info.jsx';
-import { Story } from './Story.jsx';
+import React, { useState } from 'react'
 import { withTracker } from 'meteor/react-meteor-data';
-import { Stories } from '../api/stories.js';
 import { Books } from '../api/books.js';
 import ReactDOM from 'react-dom';
 import useReactRouter from "use-react-router";
-// import {books} from "./mockBooks"
 
 export const App = (props) => {
   const books = props.books;
@@ -18,19 +13,6 @@ export const App = (props) => {
   }
   const { history } = useReactRouter();
   const [actualPage, setActualPage] = useState("1");
-  const inputEl = useRef(null);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-     const text = ReactDOM.findDOMNode(inputEl.current).value.trim();
-     ReactDOM.findDOMNode(inputEl.current).value = "";
-     if(text) {
-      Stories.insert({
-        text,
-        favourites: 0,
-      });
-     }
-  }
   
   const getSitePages = () => {
     const amountOfPages = Math.ceil(((books.length)/10));
@@ -130,15 +112,6 @@ export const App = (props) => {
       );
   }
 
-  const renderStories = () => {
-    // return getStories().map((story) => (
-    //       <Story key={story._id} story={story} />
-    //     ));
-      return props.stories.map((story) => (
-        <Story key={story._id} story={story} />
-      ));
-  }
- 
   return (
         getShopItemsList()
         );
@@ -146,102 +119,6 @@ export const App = (props) => {
 
 export default withTracker(() => {
   return {
-    // stories: Stories.find({}).fetch(),
-    // stories: Stories.find({}, { sort: { favourites: -1 } }).fetch(),
     books: Books.find({}, { sort: { _id: -1 } }).fetch(),
   };
 })(App);
-
-
-
-
-
-
-          // <div className="container">
-          //   <header>
-          //     <h1>Best stories</h1>
-          //   </header>
-
-          //   <form className="new-story" onSubmit={(event) => handleSubmit(event)} >
-          //   <input
-          //     type="text"
-          //     ref={inputEl}
-          //     placeholder="Type to add new super STORIES"
-          //   />
-          //   <input type="submit" value="SUCH A LOVELY PLACE :)" />
-          //   </form>
-
-     
-          //   <ul>
-          //     {renderStories()}
-          //   </ul>
-          // </div>
-
-
-        //   <table className="table table-hover table-striped table-dark">
-        //    <tbody>
-        //     <tr>
-        //         <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
-        //           <img className="img-rounded img-list" src="book1.png" alt="book1"/>
-        //         </td>
-        //         <td style={{"verticalAlign": "middle"}}>
-
-
-        //         <ul className="list-group list-group-flush bg-transparent">
-        //           <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold" >RECOMMENDED</li>
-        //           <li className="list-group-item bg-transparent">
-                  
-        //           <ul className="d-flex flex-wrap">
-        //               <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Title</li>
-        //               <li className="list-group-item bg-transparent horizontal-list-element" >Tower of God</li>
-        //           </ul>
-        //           <ul className="d-flex flex-wrap">
-        //               <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Author</li>
-        //               <li className="list-group-item bg-transparent horizontal-list-element" >Joseph Smith</li>
-        //           </ul>
-        //           <ul className="d-flex flex-wrap">
-        //               <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Genre</li>
-        //               <li className="list-group-item bg-transparent horizontal-list-element" >Comedy</li>
-        //           </ul>
-                  
-        //           </li>
-        //         </ul>
-
-
-        //           </td>
-        //         <td className="text-success font-weight-bold" style={{verticalAlign:"middle"}}>Available</td>
-        //       </tr>
-        //       <tr>
-        //         <td style={{"textAlign": "center", "verticalAlign": "middle"}}>
-        //           <img className="img-rounded img-list" src="book6.png" alt="book6"/>
-        //         </td>
-        //         <td style={{"verticalAlign": "middle"}}>
-
-
-        //         <ul className="list-group list-group-flush bg-transparent">
-        //           <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold" >RECOMMENDED</li>
-        //           <li className="list-group-item bg-transparent">
-                  
-        //           <ul className="d-flex flex-wrap">
-        //               <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Title</li>
-        //               <li className="list-group-item bg-transparent horizontal-list-element" >Tower of God</li>
-        //           </ul>
-        //           <ul className="d-flex flex-wrap">
-        //               <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Author</li>
-        //               <li className="list-group-item bg-transparent horizontal-list-element" >Joseph Smith</li>
-        //           </ul>
-        //           <ul className="d-flex flex-wrap">
-        //               <li className="list-group-item bg-transparent horizontal-list-element font-weight-bold">Genre</li>
-        //               <li className="list-group-item bg-transparent horizontal-list-element" >Comedy</li>
-        //           </ul>
-                  
-        //           </li>
-        //         </ul>
-
-
-        //           </td>
-        //         <td className="text-success font-weight-bold" style={{verticalAlign:"middle"}}>Available</td>
-        //       </tr>
-             
-        //    </tbody>
-        // </table>
