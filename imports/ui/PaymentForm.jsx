@@ -166,7 +166,7 @@ const PaymentForm = (props) => {
                 First Name:
                 </td>
                 <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
-                <input className="form-control" style={{"width": "100%"}} type="text" onChange={(value) => setFirstName(value)} value={firstName}></input>
+                <input className="form-control" style={{"width": "100%"}} type="text" onChange={(event) => setFirstName(event.target.value)} value={firstName}></input>
                 </td>
                 </tr>
 
@@ -178,7 +178,7 @@ const PaymentForm = (props) => {
                     Last Name:
                     </td>
                     <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
-                    <input className="form-control" style={{"width": "100%"}} type="text" onChange={(value) => setLastName(value)}  value={lastName}></input>
+                    <input className="form-control" style={{"width": "100%"}} type="text" onChange={(event) => setLastName(event.target.value)}  value={lastName}></input>
                     </td>
                 </tr>
 
@@ -190,7 +190,7 @@ const PaymentForm = (props) => {
                     Email:
                     </td>
                     <td className="text-success font-weight-bold" style={{"verticalAlign": "middle", "textAlign": "left"}}>
-                    <input className="form-control" style={{"width": "100%"}} type="email" onChange={(value) => setEmail(value)}  value={email}></input>
+                    <input className="form-control" style={{"width": "100%"}} type="email" onChange={(event) => setEmail(event.target.value)}  value={email}></input>
                     </td>
                 </tr>
                 
